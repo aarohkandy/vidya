@@ -1,0 +1,603 @@
+================================================================================
+VERCEL INTEGRATED SUPABASE SUPPORT - COMPREHENSIVE GUIDE
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+1. Overview
+2. Key Benefits
+3. Setup Instructions
+4. Environment Variables
+5. Features and Capabilities
+6. Managing Projects
+7. Development Workflow
+8. Deployment
+9. Limitations
+10. Best Practices
+11. Additional Resources
+
+================================================================================
+1. OVERVIEW
+================================================================================
+
+The Vercel-Supabase integration allows developers to seamlessly combine Supabase's 
+backend services (Postgres databases, authentication, storage, edge functions, and 
+real-time capabilities) with Vercel's deployment and hosting platform. This 
+integration provides a unified development experience where you can manage both 
+platforms from a single dashboard.
+
+The integration offers two main approaches:
+- Product Installation: Create Supabase projects as Vercel Storage resources
+- External Integration Connection: Automatically sync environment variables and 
+  auto-create redirect URLs for Vercel preview branches
+
+================================================================================
+2. KEY BENEFITS
+================================================================================
+
+2.1 Unified Management
+----------------------
+- Create and manage Supabase projects directly from the Vercel dashboard
+- Simplified project oversight with everything in one place
+- Access Supabase Studio through Vercel dashboard
+
+2.2 Automatic Environment Variable Synchronization
+---------------------------------------------------
+- Essential environment variables are automatically set in your Vercel projects
+- No manual configuration needed
+- Variables are immediately available for connected projects
+- Preview branches automatically get correct environment variables
+
+2.3 Simplified Billing
+----------------------
+- Handle all invoices through Vercel account
+- Consolidated billing processes
+- Single payment method for both services
+- Usage tracking through Vercel invoice
+
+2.4 Streamlined Authentication and Access Control
+-------------------------------------------------
+- Manage authentication and access control through Vercel's interface
+- Direct one-to-one relationship between Supabase Organization and Vercel team
+- Automatic role assignment when Vercel users interact with Supabase
+- Role management handled directly in Vercel dashboard
+- Changes synchronized with Supabase automatically
+
+2.5 Enhanced Development Workflow
+---------------------------------
+- Supabase branching feature works with Vercel's preview deployments
+- Database schemas and configurations sync with corresponding Git branches
+- Automatic redirect URL creation for preview branches
+- Seamless integration between Git workflow and database management
+
+================================================================================
+3. SETUP INSTRUCTIONS
+================================================================================
+
+3.1 Method 1: Via Vercel Marketplace (Recommended)
+--------------------------------------------------
+
+Step 1: Access Vercel Marketplace
+- Navigate to https://vercel.com/integrations/supabase
+- Or go to Vercel Dashboard > Settings > Integrations > Browse Marketplace
+- Search for "Supabase"
+
+Step 2: Install the Integration
+- Click "Add Integration"
+- Select your Vercel scope (account or specific projects)
+- Click "Continue"
+- Select the specific Vercel project you want to integrate
+- Click "Add Integration"
+
+Step 3: Create or Link Supabase Project
+- If creating new: Provide project name, database password, and select region
+- If linking existing: Select the corresponding Supabase project
+- Confirm the integration
+
+Step 4: Verify Setup
+- Check that environment variables are automatically set
+- Verify project connection in Vercel dashboard
+
+3.2 Method 2: Using Next.js Supabase Starter Template
+------------------------------------------------------
+
+Step 1: Deploy Starter Template
+- Go to https://vercel.com/new/getstarted/templates/next.js/supabase
+- Click "Deploy" or "Create Project"
+- Connect your GitHub account
+- Name your repository and choose visibility
+- Vercel will automatically clone, commit, and deploy
+
+Step 2: Create Supabase Account (if needed)
+- The template will guide you through creating a Supabase account
+- Create a new Supabase project if you don't have one
+
+Step 3: Install Integration
+- Follow the integration prompts during deployment
+- Link your Supabase project to the Vercel project
+
+3.3 Method 3: Manual Setup (External Integration)
+--------------------------------------------------
+
+Step 1: Create Supabase Project
+- Navigate to https://supabase.com/dashboard
+- Sign in with your GitHub account
+- Click "New Project"
+- Provide name, set password, select region
+- Click "Create new project"
+- Wait for provisioning to complete
+
+Step 2: Deploy Application on Vercel
+- Go to https://vercel.com/dashboard
+- Click "New Project"
+- Connect your repository
+- Deploy your application
+
+Step 3: Install Supabase Integration
+- Navigate to Settings > Integrations > Browse Marketplace
+- Search for "Supabase"
+- Click "Add Integration"
+- Select your Vercel project
+- Choose the corresponding Supabase project
+- Confirm integration
+
+================================================================================
+4. ENVIRONMENT VARIABLES
+================================================================================
+
+The integration automatically sets the following environment variables in your 
+Vercel project:
+
+4.1 Database Connection Variables
+---------------------------------
+- POSTGRES_URL
+  Description: Main PostgreSQL connection URL (pooled connection)
+  Usage: For general database operations with connection pooling
+
+- POSTGRES_PRISMA_URL
+  Description: PostgreSQL URL optimized for Prisma ORM
+  Usage: When using Prisma as your ORM
+
+- POSTGRES_URL_NON_POOLING
+  Description: Direct PostgreSQL connection URL (non-pooled)
+  Usage: For migrations, schema changes, and direct connections
+
+- POSTGRES_USER
+  Description: PostgreSQL database username
+  Usage: Database authentication
+
+- POSTGRES_HOST
+  Description: PostgreSQL database host address
+  Usage: Database connection configuration
+
+- POSTGRES_PASSWORD
+  Description: PostgreSQL database password
+  Usage: Database authentication
+
+- POSTGRES_DATABASE
+  Description: PostgreSQL database name
+  Usage: Database connection configuration
+
+4.2 Supabase API Variables
+---------------------------
+- SUPABASE_URL
+  Description: Your Supabase project URL
+  Format: https://[project-ref].supabase.co
+  Usage: Server-side API calls
+
+- SUPABASE_ANON_KEY
+  Description: Supabase anonymous/public key (server-side)
+  Usage: Server-side API calls with Row Level Security
+
+- SUPABASE_SERVICE_ROLE_KEY
+  Description: Supabase service role key (bypasses RLS)
+  Warning: Never expose this in client-side code
+  Usage: Server-side operations requiring elevated privileges
+
+- SUPABASE_JWT_SECRET
+  Description: JWT secret for token verification
+  Usage: Server-side token validation
+
+4.3 Client-Side Variables (NEXT_PUBLIC_*)
+------------------------------------------
+- NEXT_PUBLIC_SUPABASE_URL
+  Description: Supabase project URL for client-side
+  Usage: Client-side Supabase client initialization
+
+- NEXT_PUBLIC_SUPABASE_ANON_KEY
+  Description: Supabase anonymous key for client-side
+  Usage: Client-side Supabase client initialization
+
+Note: Variables prefixed with NEXT_PUBLIC_ are exposed to the browser and should 
+only contain public keys. Never expose service role keys or secrets in 
+client-side code.
+
+4.4 Variable Synchronization
+-----------------------------
+- Variables are automatically synchronized when integration is installed
+- Preview branches automatically receive correct environment variables
+- Variables update automatically when Supabase project settings change
+- No manual intervention required for variable management
+
+================================================================================
+5. FEATURES AND CAPABILITIES
+================================================================================
+
+5.1 Database Services
+---------------------
+- Full PostgreSQL database access
+- Connection pooling for optimal performance
+- Direct connections for migrations
+- Prisma ORM support
+- SQL Editor access through Supabase Studio
+
+5.2 Authentication
+------------------
+- Multiple authentication providers (Email, OAuth, Magic Links, etc.)
+- Row Level Security (RLS) policies
+- User management
+- Session management
+- JWT token handling
+
+5.3 Storage
+-----------
+- File upload and management
+- Public and private buckets
+- Image transformations
+- CDN integration
+
+5.4 Edge Functions
+------------------
+- Serverless functions at the edge
+- Low-latency responses
+- Automatic scaling
+- Integration with Vercel Edge Network
+
+5.5 Real-time Capabilities
+--------------------------
+- Real-time subscriptions
+- Database change notifications
+- WebSocket connections
+- Live data updates
+
+5.6 Preview Branch Integration
+-------------------------------
+- Automatic redirect URL creation for preview branches
+- Environment variables synced per branch
+- Database schema branching support
+- Isolated testing environments
+
+================================================================================
+6. MANAGING PROJECTS
+================================================================================
+
+6.1 Accessing Supabase Studio
+------------------------------
+You can access Supabase Studio (the Supabase dashboard) through:
+- Vercel Dashboard > Integration installation page > "Open Supabase Studio"
+- Vercel Dashboard > Storage page > Supabase project > "Open Studio"
+
+Supabase Studio provides:
+- SQL Editor: Write and execute SQL queries
+- Table Editor: Visual database management
+- Log Explorer: View application and database logs
+- Authentication: Manage users and providers
+- Storage: Manage files and buckets
+- Settings: Configure project settings
+
+6.2 Project Management
+----------------------
+- Create new Supabase projects from Vercel dashboard
+- Link existing Supabase projects to Vercel projects
+- View project status and health
+- Monitor resource usage
+- Upgrade Postgres and Compute resources
+
+6.3 Role and Permission Management
+-----------------------------------
+- Roles managed through Vercel dashboard
+- Changes automatically synchronized with Supabase
+- One-to-one relationship: Supabase Organization ↔ Vercel Team
+- Automatic account creation for Vercel users
+- Consistent access control across platforms
+
+6.4 Billing Management
+----------------------
+- All billing handled through Vercel account
+- Consolidated invoices
+- Usage tracking in Vercel dashboard
+- Pricing identical to direct Supabase pricing
+- View pricing at: https://supabase.com/pricing
+
+================================================================================
+7. DEVELOPMENT WORKFLOW
+================================================================================
+
+7.1 Local Development Setup
+---------------------------
+
+Step 1: Clone Repository
+- Clone your Vercel project repository to local machine
+- Ensure you have Git configured
+
+Step 2: Install Dependencies
+- Navigate to project directory
+- Run: npm install (or yarn install, pnpm install)
+
+Step 3: Set Up Environment Variables Locally
+- Create .env.local file in project root
+- Add environment variables from Vercel dashboard:
+  - NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+  - SUPABASE_URL=your-supabase-url (for server-side)
+  - SUPABASE_ANON_KEY=your-anon-key (for server-side)
+  - SUPABASE_SERVICE_ROLE_KEY=your-service-role-key (server-side only)
+
+Step 4: Run Development Server
+- Start local development: npm run dev
+- Access application at http://localhost:3000
+
+7.2 Using Supabase Client
+--------------------------
+
+Client-Side Usage (Next.js):
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+```
+
+Server-Side Usage (Next.js API Routes or Server Components):
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
+// Or use service role key for elevated privileges:
+// const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+```
+
+7.3 Database Operations
+-----------------------
+- Use Supabase client for queries
+- Implement Row Level Security policies
+- Use connection pooling for production
+- Use direct connections for migrations
+
+7.4 Preview Branch Workflow
+----------------------------
+- Create feature branch in Git
+- Push to GitHub
+- Vercel automatically creates preview deployment
+- Supabase integration automatically:
+  - Creates redirect URLs for the preview branch
+  - Syncs environment variables
+  - Links preview deployment to correct Supabase project/branch
+
+================================================================================
+8. DEPLOYMENT
+================================================================================
+
+8.1 Automatic Deployments
+-------------------------
+- Push changes to main branch
+- Vercel automatically detects changes
+- Initiates new deployment
+- Environment variables automatically available
+- No manual configuration needed
+
+8.2 Preview Deployments
+-----------------------
+- Push to feature branch
+- Vercel creates preview deployment
+- Supabase integration:
+  - Automatically sets environment variables
+  - Creates redirect URLs in Supabase
+  - Links preview to correct Supabase branch (if using branching)
+
+8.3 Production Deployment
+-------------------------
+- Merge to main branch
+- Vercel deploys to production
+- Production environment variables automatically configured
+- Supabase production database connected
+- Monitor through Vercel dashboard
+
+8.4 Environment-Specific Configuration
+---------------------------------------
+- Production: Uses production Supabase project
+- Preview: Uses preview/branch-specific Supabase configuration
+- Development: Uses local environment variables from .env.local
+
+================================================================================
+9. LIMITATIONS
+================================================================================
+
+When using the Vercel Marketplace integration, note the following limitations:
+
+9.1 Project Creation
+--------------------
+- Projects can only be created via the Vercel dashboard
+- Cannot create projects directly in Supabase dashboard when using integration
+
+9.2 Organization Management
+---------------------------
+- Organizations cannot be removed manually
+- Organizations are removed only if you uninstall the Vercel Marketplace Integration
+- Limited manual control over organization structure
+
+9.3 Owner Management
+--------------------
+- Owners cannot be added manually within the Supabase dashboard
+- Owner management must be done through Vercel dashboard
+- Changes synchronized automatically
+
+9.4 Billing
+-----------
+- Invoices and payments must be managed through the Vercel dashboard
+- Cannot manage billing directly in Supabase dashboard
+- All payments go through Vercel account
+
+9.5 Custom Domains
+------------------
+- Custom domains are not supported
+- The base SUPABASE_URL is used for Vercel environment variables
+- Cannot use custom domain for Supabase project when integrated via Vercel
+
+9.6 Migration Considerations
+-----------------------------
+- If you have existing Supabase projects, you can link them
+- Some features may require project recreation through Vercel
+- Consider project structure before integrating
+
+================================================================================
+10. BEST PRACTICES
+================================================================================
+
+10.1 Security
+-------------
+- Never expose SUPABASE_SERVICE_ROLE_KEY in client-side code
+- Use Row Level Security (RLS) policies for data protection
+- Use anon key for client-side operations
+- Use service role key only in secure server-side contexts
+- Regularly rotate API keys and passwords
+
+10.2 Environment Variables
+---------------------------
+- Use NEXT_PUBLIC_* prefix only for client-side variables
+- Keep sensitive keys server-side only
+- Use .env.local for local development
+- Never commit .env files to Git
+- Use Vercel's environment variable management for production
+
+10.3 Database Management
+------------------------
+- Use connection pooling (POSTGRES_URL) for regular operations
+- Use direct connection (POSTGRES_URL_NON_POOLING) for migrations
+- Implement proper database migrations
+- Use Supabase Studio for database management
+- Monitor database performance and usage
+
+10.4 Development Workflow
+-------------------------
+- Use preview branches for testing
+- Test database changes in preview environments
+- Use Supabase branching feature for schema changes
+- Keep production database stable
+- Document database schema changes
+
+10.5 Performance
+----------------
+- Use connection pooling for better performance
+- Implement proper indexing
+- Use Supabase Edge Functions for serverless operations
+- Leverage Vercel Edge Network for global distribution
+- Monitor and optimize queries
+
+10.6 Error Handling
+-------------------
+- Implement proper error handling for Supabase operations
+- Log errors appropriately
+- Use Supabase Log Explorer for debugging
+- Monitor Vercel function logs
+- Set up error tracking
+
+10.7 Authentication
+-------------------
+- Implement proper authentication flows
+- Use Supabase Auth helpers for Next.js
+- Handle session management correctly
+- Implement proper logout flows
+- Secure API routes with authentication checks
+
+================================================================================
+11. ADDITIONAL RESOURCES
+================================================================================
+
+11.1 Official Documentation
+----------------------------
+- Vercel Supabase Integration: https://vercel.com/integrations/supabase
+- Supabase Vercel Marketplace Guide: 
+  https://supabase.com/docs/guides/integrations/vercel-marketplace
+- Supabase Documentation: https://supabase.com/docs
+- Vercel Documentation: https://vercel.com/docs
+
+11.2 Starter Templates
+----------------------
+- Next.js Supabase Starter: 
+  https://vercel.com/new/getstarted/templates/next.js/supabase
+- Supabase Examples: https://github.com/supabase/supabase/tree/master/examples
+
+11.3 Community Resources
+------------------------
+- Vercel Community Forum: https://community.vercel.com/
+- Supabase Discord: https://discord.supabase.com/
+- Supabase GitHub: https://github.com/supabase/supabase
+
+11.4 Video Tutorials
+---------------------
+- Setup Next.js, Vercel and Supabase project: 
+  https://www.youtube.com/watch?v=Rv2gQX5FVg8
+- Deploy Supabase Storage Example on Vercel: 
+  https://www.youtube.com/watch?v=OZBWvc1NCe0
+
+11.5 Pricing Information
+-------------------------
+- Supabase Pricing: https://supabase.com/pricing
+- Vercel Pricing: https://vercel.com/pricing
+
+================================================================================
+12. TROUBLESHOOTING
+================================================================================
+
+12.1 Common Issues
+------------------
+
+Issue: Environment variables not appearing
+Solution: 
+- Verify integration is properly installed
+- Check Vercel project settings > Environment Variables
+- Reinstall integration if needed
+- Ensure Supabase project is correctly linked
+
+Issue: Cannot access Supabase Studio
+Solution:
+- Check integration status in Vercel dashboard
+- Verify you have proper permissions
+- Try accessing through Vercel Storage page
+- Contact support if issue persists
+
+Issue: Preview branches not connecting to Supabase
+Solution:
+- Verify integration is installed at account/project level
+- Check that redirect URLs are being created
+- Ensure environment variables are syncing
+- Check Supabase project settings
+
+Issue: Billing not showing in Vercel
+Solution:
+- Verify integration billing is enabled
+- Check Vercel account billing settings
+- Ensure integration is properly installed
+- Contact Vercel support
+
+12.2 Getting Help
+-----------------
+- Check official documentation first
+- Search Vercel Community Forum
+- Search Supabase Discord
+- Open GitHub issues for bugs
+- Contact support for billing/account issues
+
+================================================================================
+END OF GUIDE
+================================================================================
+
+Last Updated: Based on current Vercel and Supabase integration features
+For the most up-to-date information, always refer to the official documentation.
+
